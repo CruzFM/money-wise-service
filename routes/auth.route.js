@@ -1,7 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 const User = require('../models/User.model');
+
+const SECRET_KEY = process.env.SECRET_KEY
 
 
 
@@ -44,10 +48,33 @@ router.post('/register', async (req, res) =>{
         console.error('User could not be registered: ', error);
         return res.status(500).json({message: 'Server internal Error'});
     }
-})
+});
 
 //TODO: Implement route requests for log in.
+router.post('/login', async (req, res) =>{
+    try {
+        const { email, password } = req.body;
 
+        //*Verifies if user exists.
+        const user = await User.findOne({ email });
+    
+        //*If not, send an error message.
+        if(!user){
+            return res.status(401).json({ message: 'Invalid email or password'});
+        }
+    
+        const passwordMatch = await bcrypt.compare(password, user.passwordHash);
+        if (!passwordMatch){
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+    
+        //*Generate a JWT
+        const token = jwt.sign({ userId: user._id}, SECRET_KEY, {expiresIn: '1h'});
+        res.status(200).json({ token });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 //TODO: Implement route requests for recover password.
 
