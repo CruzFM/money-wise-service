@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
+const { model, Schema } = mongoose;
 
-const TransactionSchema = mongoose.Schema(
+const TransactionSchema = Schema(
   {
+    //The user that made the transaction
     userId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -16,11 +18,9 @@ const TransactionSchema = mongoose.Schema(
         type: Number,
         required: true
     },
-    category: "string",
-    description: {
-        type: String,
-        required: false
-    },
+    category: String,
+    description: String,
+    //When this transaction was made.
     date: {
         type: Date,
         default: Date.now
@@ -30,3 +30,7 @@ const TransactionSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+const Transaction = model('Transaction', TransactionSchema);
+
+module.exports = Transaction;

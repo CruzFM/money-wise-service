@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { model, Schema } = mongoose;
 
 const validateEmail = function (email) {
     // Expresión regular para validar una dirección de correo electrónico
@@ -7,10 +8,10 @@ const validateEmail = function (email) {
 };
 
 
-const UserSchema = mongoose.Schema(
+const UserSchema = Schema(
     {
         _id: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             auto: true
         },
         username: {
@@ -30,14 +31,10 @@ const UserSchema = mongoose.Schema(
             type: String,
             required: true
         },
-        // createdAt: {
-        //     type: Date,
-        //     default: Date.now
-        // }
     },
     {
         timestamps: true
     }
 );
-
-module.exports = mongoose.model('User', UserSchema);
+const User = model('User', UserSchema);
+module.exports = User;
