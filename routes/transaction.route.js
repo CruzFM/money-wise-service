@@ -47,8 +47,59 @@ router.post('/new', authValidate, async (req, res) =>{
 })
 
 //TODO: Get all transactions
+router.get("/all", authValidate, async(req, res) =>{
+    try {
+        const transactions = await Transaction.find({});
+        return res.status(200).json(transactions);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({message: "Server Error. Please try later."})
+    }
+});
+
 //TODO: Get a single transaction
+router.get('/:transactionId', authValidate, async (req, res)=>{
+    try {
+        
+    } catch (error) {
+        
+    }
+})
+
 //TODO: Get only Expenses
+router.get('/expenses', authValidate, async (req, res)=>{
+    try {
+        
+    } catch (error) {
+        
+    }
+})
+
 //TODO: Get only Incomes
+router.get('/incomes', authValidate, async (req,res) =>{
+    try {
+        
+    } catch (error) {
+        
+    }
+})
+
+//TODO: edit transaction
+router.patch(':/transactionId', authValidate, async(req, res)=>{
+    try {
+        
+    } catch (error) {
+        
+    }
+})
+
+//TODO: delete transaction
+router.delete(':/transactionId', authValidate, async(req, res)=>{
+    try {
+        
+    } catch (error) {
+        
+    }
+})
 
 module.exports = router;
