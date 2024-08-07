@@ -31,7 +31,7 @@ router.get('/', async (req, res)=>{
     }
 });
 
-//Create new transaction
+//Creates new transaction
 router.post('/new', authValidate, async (req, res) =>{
     try {
         const newTransaction = new Transaction({
@@ -46,7 +46,7 @@ router.post('/new', authValidate, async (req, res) =>{
     }
 })
 
-//TODO: Get all transactions
+//Gets all transactions
 router.get("/all", authValidate, async(req, res) =>{
     try {
         const transactions = await Transaction.find({});
@@ -57,12 +57,15 @@ router.get("/all", authValidate, async(req, res) =>{
     }
 });
 
-//TODO: Get a single transaction
+//Gets a single transaction
 router.get('/:transactionId', authValidate, async (req, res)=>{
     try {
-        
+        const id = req.params.transactionId;
+        const transaction = await Transaction.findOne({_id: id});
+        return res.status(200).json(transaction);
     } catch (error) {
-        
+        console.error(error);
+        return res.status(500).json({message: "No salio, pero no te rindas."})
     }
 })
 
