@@ -44,7 +44,7 @@ router.post('/new', authValidate, async (req, res) =>{
         console.error(error);
         return res.status(500).json({message: "Server error. Transaction not saved."})
     }
-})
+});
 
 //Gets all transactions
 router.get("/all", authValidate, async(req, res) =>{
@@ -57,6 +57,28 @@ router.get("/all", authValidate, async(req, res) =>{
     }
 });
 
+//Get only Expenses
+router.get('/expenses', authValidate, async (req, res)=>{
+    try {
+        const expenses = await Transaction.find({type: 'expense'});
+        return res.status(200).json(expenses);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({message: error});
+    }
+});
+
+//TODO: Get only Incomes
+router.get('/incomes', authValidate, async (req,res) =>{
+    try {
+        const incomes = await Transaction.find({type: 'income'});
+        return res.status(200).json(incomes);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({message: error});
+    }
+});
+
 //Gets a single transaction
 router.get('/:transactionId', authValidate, async (req, res)=>{
     try {
@@ -65,27 +87,9 @@ router.get('/:transactionId', authValidate, async (req, res)=>{
         return res.status(200).json(transaction);
     } catch (error) {
         console.error(error);
-        return res.status(500).json({message: "No salio, pero no te rindas."})
+        return res.status(500).json({message: "Server Error. Please try later."})
     }
-})
-
-//TODO: Get only Expenses
-router.get('/expenses', authValidate, async (req, res)=>{
-    try {
-        
-    } catch (error) {
-        
-    }
-})
-
-//TODO: Get only Incomes
-router.get('/incomes', authValidate, async (req,res) =>{
-    try {
-        
-    } catch (error) {
-        
-    }
-})
+});
 
 //TODO: edit transaction
 router.patch(':/transactionId', authValidate, async(req, res)=>{
