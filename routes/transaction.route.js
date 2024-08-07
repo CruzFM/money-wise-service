@@ -94,10 +94,16 @@ router.patch('/:transactionId', authValidate, async(req, res)=>{
 //TODO: delete transaction
 router.delete('/:transactionId', authValidate, async(req, res)=>{
     try {
-        
+        const id = req.params.transactionId;
+        const deletedTransaction = await Transaction.findOneAndDelete({_id: id});
+        if (!deletedTransaction){
+            return res.status(404).json({message: "Transaction not found."});
+        }
+        return res.status(200).json({message: "Transaction successfully deleted!"});
     } catch (error) {
-        
+        console.error(error);
+        return res.status(500).json(error);
     }
-})
+});
 
 module.exports = router;
