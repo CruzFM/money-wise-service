@@ -6,7 +6,7 @@ const cors = require('cors');
 const authRoute = require('./routes/auth.route');
 const transactionRoute = require('./routes/transaction.route');
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 const databaseUrl = process.env.DATABASE_URL
 
 //Allows cross site scripting
