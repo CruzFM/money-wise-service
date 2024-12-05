@@ -24,7 +24,7 @@ router.post("/new", authValidate, async (req, res) => {
 //Gets all transactions
 router.get("/all", authValidate, async (req, res) => {
   try {
-    const transactions = await Transaction.find({ userId: req.user._id });
+    const transactions = await Transaction.find({ userId: req.user._id }).sort({ createdAt: -1 });
     return res.status(200).json(transactions);
   } catch (error) {
     console.error(error);
@@ -38,7 +38,7 @@ router.get("/expenses", authValidate, async (req, res) => {
     const expenses = await Transaction.find({ 
       userId: req.user._id,
       type: "expense" 
-    });
+    }).sort({ createdAt: -1 });
     return res.status(200).json(expenses);
   } catch (error) {
     console.error(error);
@@ -52,7 +52,7 @@ router.get("/incomes", authValidate, async (req, res) => {
     const incomes = await Transaction.find({ 
       userId: req.user._id,
       type: "income" 
-    });
+    }).sort( {createdAt: -1} );
     return res.status(200).json(incomes);
   } catch (error) {
     console.error(error);
