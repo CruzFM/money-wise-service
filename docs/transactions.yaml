@@ -1,0 +1,168 @@
+components:
+  schemas:
+    Transaction:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: The user who makes the request
+          required: true
+        type:
+          type: string
+          description: The transaction type, can be Incomes or Expenses
+          required: true
+        amount:
+          type: number
+          description: The amount of the transaction
+          required: true
+        category:
+          type: string
+          description: the category of the transaction
+          required: false
+        description:
+          type: string
+          description: The reason for the transaction
+          required: true
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /transactions/new:
+    post:
+      summary: Creates a new transaction
+      tags: [Transactions]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transactions'
+      responses:
+        200:
+          description: Transaction created successfully
+        400:
+          description: Bad request
+        500:
+          description: Server internal error
+  
+  /transactions/all:
+    get:
+      summary: Gets all transactions from the requesting user
+      tags: [Transactions]
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: List of transactions retrieved successfully
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+
+  /transactions/expenses:
+    get:
+      summary: Gets all expense transactions
+      tags: [Transactions]
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: List of expenses retrieved successfully
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+
+  /transactions/incomes:
+    get:
+      summary: Gets all income transactions
+      tags: [Transactions]
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: List of incomes retrieved successfully
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+
+  /transactions/{id}:
+    get:
+      summary: Gets a specific transaction by ID
+      tags: [Transactions]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The transaction ID
+      responses:
+        200:
+          description: Transaction retrieved successfully
+        404:
+          description: Transaction not found
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+
+    patch:
+      summary: Updates a transaction by ID
+      tags: [Transactions]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The transaction ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        200:
+          description: Transaction updated successfully
+        400:
+          description: Bad request
+        404:
+          description: Transaction not found
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
+
+    delete:
+      summary: Deletes a transaction by ID
+      tags: [Transactions]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The transaction ID
+      responses:
+        200:
+          description: Transaction deleted successfully
+        404:
+          description: Transaction not found
+        401:
+          description: Unauthorized
+        500:
+          description: Internal server error
